@@ -16,22 +16,26 @@
 }
 
 #field {
-	width: 50vw;
-	height: 50vw;
+	width: 30vw;
+	height: 30vw;
 	margin: auto;
 }
 
 .square {
-	width: calc(50vw / 10);
-	height: calc(50vw / 10);
+	width: calc(30vw / 10);
+	height: calc(30vw / 10);
 	float: left;
-	background-color: lightgray;
+	background-color: lightgreen;
 }
 
 .cell {
 	width: 100%;
 	height: 100%;
-	border: 1px solid red;
+	border: 1px solid grey;
+}
+
+.clicked {
+	background-color: red;
 }
 /* Fine Main */
 /* -------------------------------------------------- */

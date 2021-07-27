@@ -5,12 +5,12 @@ TODO:
 //In seguito deve chiedere all’utente (100 - 16) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
 //L’utente non può inserire più volte lo stesso numero.
 //Se il numero è presente nella lista dei numeri generati, la partita termina, altrimenti si continua chiedendo all’utente un altro numero.
-La partita termina quando il giocatore inserisce un numero “vietato” o raggiunge il numero massimo possibile di numeri consentiti.
-Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito.
+//La partita termina quando il giocatore inserisce un numero “vietato” o raggiunge il numero massimo possibile di numeri consentiti.
+//Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito.
 */
 
-const computerNumbers = [];
-const userNumbers = [];
+var computerNumbers = [];
+var userNumbers = [];
 /* ------ Range per la generazione casuale dei numeri ----- */
 var bombsAmount = 16;
 var min = 1;
@@ -22,24 +22,19 @@ var userChoices = max - bombsAmount;
 generateBombs(computerNumbers);
 generateField(max);
 
-for (let i = 0; i < userChoices; i++) {
-	let inputNumber = parseInt(prompt('Inserisci un numero da 1 a 100'));
-
-	while (userNumbers.includes(inputNumber) || inputNumber > max || inputNumber < min || isNaN(inputNumber)) {
-		inputNumber = parseInt(prompt('Inserisci un numero da 1 a 100'));
-	}
-
-	if (computerNumbers.includes(inputNumber)) {
-		console.log('Hai Perso!');
-		break;
+document.getElementById('field').addEventListener('click', function (e) {
+	let element = document.querySelectorAll("[data-cell='" + e.target.dataset.cell + "']");
+	element[0].classList.add('clicked');
+	if (computerNumbers.includes(e.target.dataset.cell)) {
+		alert('Hai Perso! Punteggio: ' + userNumbers.length);
+		location.reload();
 	} else if (userNumbers.length == userChoices) {
-		console.log('Hai vinto!');
-		break;
+		alert('Hai Vinto! Punteggio: ' + userNumbers.length);
+		location.reload();
 	} else {
-		userNumbers.push(inputNumber);
+		userNumbers.push(e.target.dataset.cell);
 	}
-}
-console.log('Punteggio: ' + userNumbers.length);
+});
 
 /* Funzione per la semplice generazione random di un numero tra min e max inclusi */
 function getRandomInt(min, max) {
@@ -52,6 +47,7 @@ function generateBombs(array) {
 		do {
 			var random = getRandomInt(min, max);
 		} while (array.includes(random));
+		array.push(random.toString());
 	}
 	console.log(computerNumbers);
 }
@@ -59,7 +55,7 @@ function generateBombs(array) {
 function generateField(amount) {
 	for (let i = 1; i <= amount; i++) {
 		let cell = `
-			<div data-cell-${i} class="cell"></div>
+			<div data-cell='${i}' class="cell"></div>
 		`;
 
 		let addCells = document.createElement('DIV');
@@ -68,7 +64,3 @@ function generateField(amount) {
 		document.getElementById('field').appendChild(addCells);
 	}
 }
-
-document.getElementById('field').addEventListener('click', function (e) {
-	console.log(e.target.datacet.cell);
-});
